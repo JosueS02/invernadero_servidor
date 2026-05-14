@@ -5,6 +5,7 @@ package model.entity;
  * @author josue
  */
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -15,14 +16,17 @@ public class Invernadero {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "ubicacion", length = 200)
+    @Column(length = 200)
     private String ubicacion;
 
-    @Column(name = "estado_activo")
-    private boolean estadoActivo = true;
+    @Column(nullable = false)
+    private String estado = "ACTIVO"; // Puede ser ACTIVO, INACTIVO, MANTENIMIENTO
+
+    @Column(name = "fecha_creacion", updatable = false)
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
 
     @OneToMany(mappedBy = "invernadero", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Sensor> sensores;
@@ -33,10 +37,12 @@ public class Invernadero {
     public Invernadero() {
     }
 
-    public Invernadero(String nombre, String ubicacion) {
+    public Invernadero(Long id, String nombre, String ubicacion, List<Sensor> sensores, List<Actuador> actuadores) {
+        this.id = id;
         this.nombre = nombre;
         this.ubicacion = ubicacion;
-        this.estadoActivo = true;
+        this.sensores = sensores;
+        this.actuadores = actuadores;
     }
 
     public Long getId() {
@@ -63,14 +69,6 @@ public class Invernadero {
         this.ubicacion = ubicacion;
     }
 
-    public boolean isEstadoActivo() {
-        return estadoActivo;
-    }
-
-    public void setEstadoActivo(boolean estadoActivo) {
-        this.estadoActivo = estadoActivo;
-    }
-
     public List<Sensor> getSensores() {
         return sensores;
     }
@@ -86,4 +84,22 @@ public class Invernadero {
     public void setActuadores(List<Actuador> actuadores) {
         this.actuadores = actuadores;
     }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+    
+    
 }

@@ -14,7 +14,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = true, unique = true, length = 50)
     private String username;
 
     @Column(nullable = false)
@@ -23,7 +23,7 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String rol;
 
     public Usuario() {
